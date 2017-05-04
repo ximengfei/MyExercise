@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_advice_feedback"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f6f6f6"
+    tools:context="com.qanzone.mypreciousgift.activity.AdviceFeedbackActivity">
+    <LinearLayout
+        android:id="@+id/ll_advice"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+    <include layout="@layout/layout_title_view"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <com.qanzone.mypreciousgift.view.CircleImageView
+                android:id="@+id/user_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/default_header" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="21dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="21dp">
+
+
+                <EditText
+                    android:id="@+id/user_phone_number"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:hint="@string/feedback_link"/>
+
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c9c9c9" />
+
+        <EditText
+            android:id="@+id/edt_af_content"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="15dp"
+            android:gravity="top"
+            android:background="@drawable/iv_feedback_background_sheet"
+            android:hint="尽管提意见~~~"
+            android:paddingLeft="5dp"
+            android:paddingTop="9dp"
+            android:textColorHint="#c3c3c3"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_selector"
+        android:gravity="center"
+        android:text="提交"
+        android:textColor="@android:color/white" />
+</RelativeLayout>
