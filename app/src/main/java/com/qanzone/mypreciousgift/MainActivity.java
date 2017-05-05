@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -50,6 +53,8 @@ import com.qanzone.mypreciousgift.utils.music.MusicPlayerListener;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,8 +81,15 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
     FloatingActionButton fabNext;
     @BindView(R.id.fmm)
     FloatingMusicMenu fmm;
+    @BindView(R.id.music_seekbar)
+    AppCompatSeekBar musicSeekbar;  //音乐的进度条
+    @BindView(R.id.music_seekbar_parent)
+    RelativeLayout musicSeekbarParent; //音乐进度条的父布局
     private MusicHandler musicHandler;
-
+    private boolean musicSeekBarIsShowing = false; //音乐进度条的父布局当前是否正在显示
+    //音乐控制条的定时器
+    private Timer time;
+    private TimerTask TimerTask;
 
     private BaseFragment mLastFragment;
     private BaseFragment mCurrentFragment;
@@ -177,6 +189,62 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
 
             }
         });
+
+        fabNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //显示进度条
+                if (!musicSeekBarIsShowing) {
+                    musicSeekbarParent.setVisibility(View.VISIBLE);
+                    musicSeekBarIsShowing = true;
+                    PublicFunc.fadeViewIn(musicSeekbarParent, null);
+                    if (time == null) {
+                        time = new Timer();
+
+                    }
+
+                    //坑爹，每次都需要新建一个Task任务
+                    TimerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            MainActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    PublicFunc.fadeViewOut(musicSeekbarParent, new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            musicSeekBarIsShowing = false;
+                                            musicSeekbarParent.setVisibility(View.GONE);
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    };
+
+                    time.schedule(TimerTask, 4000);
+                }
+            }
+        });
+
+        musicSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mMusicWindow.seekTo(seekBar.getProgress());
+            }
+        });
     }
 
     private void initSlideNavigation() {
@@ -186,20 +254,18 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
 
         navigationview.setNavigationItemSelectedListener(this);
 
-        fabNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                drawerlayout.openDrawer(Gravity.LEFT);
-            }
-        });
-
     }
 
     @Override
     protected void onDestroy() {
         if (mAudioManager != null && mAudioFocusChangeListener != null) {
             mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
+        }
+
+        //清理定时器
+        if (time != null) {
+            time.cancel();
+            time = null;
         }
 
         mMusicWindow.dealloc();
@@ -523,13 +589,29 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
         fmm.setProgress(musicProgress * 100 / musicDuration);
     }
 
+    //显示侧滑菜单
+    public void showNavigation() {
+        drawerlayout.openDrawer(Gravity.LEFT);
+    }
+
     public class MusicHandler extends Handler {
 
         @Override
         public void dispatchMessage(Message msg) {
             super.dispatchMessage(msg);
             updateProgress();
+            updateMusicSeekBar();
             sendEmptyMessageDelayed(0, 1000);
         }
+    }
+
+    //更新拖拽音乐的进度条
+    private void updateMusicSeekBar() {
+        int musicDuration = mMusicWindow.getDuration();
+        if (musicDuration == -1) return;
+        int musicProgress = mMusicWindow.getCurrentPosition();
+
+        musicSeekbar.setMax(musicDuration);
+        musicSeekbar.setProgress(musicProgress);
     }
 }

@@ -14,10 +14,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/developeing"/>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        >
+        <ImageView
+            android:id="@+id/navigation_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/navigation_menu_selector"
+            />
+
         <TextView
+            android:id="@+id/helloworldtxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="你好"
+            android:textColor="@color/mediumslateblue"
+            android:textSize="@dimen/title_text_size"/>
 
-            android:text="此功能正在开发中..."/>
-    </LinearLayout>
+    </RelativeLayout>
+
 </RelativeLayout>

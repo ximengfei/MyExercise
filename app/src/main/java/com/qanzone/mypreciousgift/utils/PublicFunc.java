@@ -9,6 +9,11 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Interpolator;
 import android.widget.Toast;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
@@ -191,5 +196,40 @@ public class PublicFunc {
             Builder.setNegativeButton(noText, noListener);
         return Builder.show();
     }
+
+    // ### 动画相关
+    public static final int ANIM_DURATION_SHORT = 200;
+    public static void fadeViewIn(View view, final Runnable onEnd) {
+        fadeView(view, 0.0f, 1.0f, ANIM_DURATION_SHORT, false, onEnd);
+    }
+    public static void fadeViewOut(View view, final Runnable onEnd) {
+        fadeView(view, 1.0f, 0.0f, ANIM_DURATION_SHORT, false, onEnd);
+    }
+    public static void fadeView(View view, float fromAlpha, float toAlpha, int duration, boolean fillAfter, final Runnable onEnd) {
+        fadeView(view, fromAlpha, toAlpha, duration, fillAfter, new AccelerateDecelerateInterpolator(), onEnd);
+    }
+    public static void fadeView(View view, float fromAlpha, float toAlpha, int duration, boolean fillAfter, Interpolator interplator, final Runnable onEnd) {
+        final AlphaAnimation anim = new AlphaAnimation(fromAlpha, toAlpha);
+        anim.setDuration(duration);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                MainThread.runLater(onEnd);
+            }
+        });
+        anim.setInterpolator(interplator);
+        anim.setFillEnabled(fillAfter);
+        anim.setFillAfter(fillAfter);
+        view.startAnimation(anim);
+    }
+    // ### 动画相关
 
 }

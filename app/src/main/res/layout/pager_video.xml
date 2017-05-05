@@ -14,57 +14,63 @@
      android:background="@drawable/fragment_video_bg"/>
 
 </FrameLayout>
-    <LinearLayout
-
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/transparent">
 
-        <RelativeLayout
-            android:id="@+id/tv"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_weight="1"
-            android:paddingLeft="10dp"
-            android:paddingRight="5dp"
-            android:paddingTop="25dp"
-            android:paddingBottom="10dp">
+        <LinearLayout
 
-            <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/transparent">
+
+            <RelativeLayout
+                android:id="@+id/tv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/mw1"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:text="电视台"
-                android:textColor="@color/aliceblue"
-                android:textSize="@dimen/title_text_size"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/lunb0"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="10dp"
-            android:paddingTop="25dp"
-            android:paddingBottom="10dp">
-            <ImageView
+                android:layout_height="300dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="25dp"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/mw1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="电视台"
+                    android:textColor="@color/aliceblue"
+                    android:textSize="@dimen/title_text_size"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/lunb0"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/mw2"/>
-            <TextView
-                android:textColor="@color/aliceblue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:text="轮播台"
-                android:textSize="@dimen/title_text_size"/>
-        </RelativeLayout>
-    </LinearLayout>
+                android:layout_height="300dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/mw2"/>
+                <TextView
+                    android:textColor="@color/aliceblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="轮播台"
+                    android:textSize="@dimen/title_text_size"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
 </RelativeLayout>

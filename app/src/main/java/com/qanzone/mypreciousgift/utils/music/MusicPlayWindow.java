@@ -97,4 +97,11 @@ public class MusicPlayWindow implements MediaPlayer.OnPreparedListener, MediaPla
         mPlayer.stop();
         mPlayer.release();
     }
+
+    //播放对应进度条的进度
+    public void seekTo(int progress) {
+        if (mPlayer != null) {
+            mPlayer.seekTo(progress);
+        }
+    }
 }
