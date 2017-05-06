@@ -21,7 +21,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashActivity"
+        <activity
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,17 +30,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.VideoListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PlayerActivity"
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.VideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".activity.AdviceFeedbackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AdviceFeedbackActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"></activity>
-
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.NetVideoListActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

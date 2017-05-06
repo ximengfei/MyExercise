@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.qanzone.mypreciousgift.R;
+import com.qanzone.mypreciousgift.activity.NetVideoListActivity;
 import com.qanzone.mypreciousgift.activity.VideoListActivity;
 import com.qanzone.mypreciousgift.base.BaseFragment;
 import com.qanzone.mypreciousgift.utils.ConstantKey;
@@ -63,8 +64,11 @@ public class VideoFragment extends BaseFragment {
     @OnClick(R.id.tv)
     void tvClick(){
 //        PublicFunc.showMsg(mContext, "tvclick");
-        startActivity(new Intent(mContext, VideoListActivity.class).putExtra(ConstantKey.VIDEOLIST_TYPE, VideoListActivity.INTENT_TV));
+        //1.02版本以前的跳转方式
+//        startActivity(new Intent(mContext, VideoListActivity.class).putExtra(ConstantKey.VIDEOLIST_TYPE, VideoListActivity.INTENT_TV));
 
+        //1.03 新的网络数据列表页面
+        startActivity(new Intent(mContext, NetVideoListActivity.class));
     }
 
     @OnClick(R.id.lunb0)

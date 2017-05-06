@@ -18,10 +18,12 @@
         <item>我是第二行数据</item>
         <item>我是第二行数据</item>
     </string-array>
-<string name="shengming" > \u3000\u3000     视频源来自与网络，可能存在失效，加载不出来请返回试试其他的，后续会更新测试视频源，有BUG请联系 qq：1024326463</string>
+    <string name="shengming"> \u3000\u3000     视频源来自与网络，可能存在失效，加载不出来请返回试试其他的，后续会更新测试视频源，有BUG请联系 qq：1024326463</string>
     <string name="serious_dialog">我是很严肃的弹框</string>
     <string name="meng_dialog">我是萌萌哒的弹框</string>
     <string name="feedback_link">你的联系方式（微信、qq、手机select one）</string>
     <string name="contact_is_empty">留下你的联系方式好伐?...</string>
     <string name="advice_is_empty">您有什么好的建议呢?...</string>
+    <string name="load_data_error">加载数据失败</string>
+    <string name="load_data_error_resolve">请下拉屏幕再次刷新</string>
 </resources>

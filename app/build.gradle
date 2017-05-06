@@ -10,8 +10,8 @@ android {
         applicationId "com.qanzone.mypreciousgift"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 4
-        versionName "1.02"
+        versionCode 5
+        versionName "1.03"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -140,7 +140,8 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
                     mMusicWindow.pausePlay();
                 }
                 if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                    mMusicWindow.resumePlay();
+                    //重新获取焦点
+//                    mMusicWindow.resumePlay();
                 }
             }
         };
