@@ -337,7 +337,8 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
             updatalog = updatalog.replace("\\n", "\n");
         }
         tvContent.setText(updatalog);
-        tvUpdateTile.setText("(版本号:V" + result.getServicecode() + ".0)");
+//        tvUpdateTile.setText("(版本号:V" + result.getServicecode() + ".0)");
+        tvUpdateTile.setText("(更新日期:" + result.getUpdatedAt());
 
         ok.setOnClickListener(new View.OnClickListener() {
 
