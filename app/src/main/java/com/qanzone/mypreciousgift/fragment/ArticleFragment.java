@@ -57,6 +57,8 @@ public class ArticleFragment extends BaseFragment {
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
 
+    boolean isCalling;
+
     @Override
     protected View initFragmentView() {
         return LayoutInflater.from(mContext).inflate(R.layout.pager_article, null);
@@ -73,6 +75,7 @@ public class ArticleFragment extends BaseFragment {
         loadDataError.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isCalling) return;
                 xxx();
             }
         });
@@ -146,12 +149,15 @@ public class ArticleFragment extends BaseFragment {
     }
 
     private void xxx() {
+        isCalling = true;
         getArticleData(today_article_url, new Listener() {
             @Override
             public void success(final String title, final String content, final String author) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        isCalling = false;
+                        loadDataError.setVisibility(View.GONE);
                         collapsingToolbarLayout.setTitle(title);
                         articleAuthor.setText(author);
                         String replace = content.replace("<p>", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>");
@@ -163,6 +169,7 @@ public class ArticleFragment extends BaseFragment {
 
             @Override
             public void faile() {
+                isCalling = false;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
