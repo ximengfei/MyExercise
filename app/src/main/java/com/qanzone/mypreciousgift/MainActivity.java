@@ -40,6 +40,7 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.qanzone.mypreciousgift.activity.AdviceFeedbackActivity;
 import com.qanzone.mypreciousgift.base.BaseFragment;
 import com.qanzone.mypreciousgift.bean.version;
+import com.qanzone.mypreciousgift.fragment.ArticleFragment;
 import com.qanzone.mypreciousgift.fragment.ExtraFragment;
 import com.qanzone.mypreciousgift.fragment.PicFragment;
 import com.qanzone.mypreciousgift.fragment.VideoFragment;
@@ -94,7 +95,8 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
     private BaseFragment mLastFragment;
     private BaseFragment mCurrentFragment;
     private VideoFragment mVideoFragment;
-    private ExtraFragment mExtraFragment;
+//    private ExtraFragment mExtraFragment;
+    private ArticleFragment mArticleFragment;
     private PicFragment mPicFragment;
     private final String NEW_APK_NAME = "newVersion.apk";
     private static final int REQUEST_FOR_INSTALL_NEWAPP = 1000;
@@ -367,7 +369,8 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
 
     private void initFragment() {
         mPicFragment = new PicFragment(this);
-        mExtraFragment = new ExtraFragment(this);
+//        mExtraFragment = new ExtraFragment(this);
+        mArticleFragment = new ArticleFragment(this);
         mVideoFragment = new VideoFragment(this);
 
         mCurrentFragment = mPicFragment;
@@ -429,7 +432,7 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
                 break;
             case 2:
 //                StatusBarUtil.setColor(MainActivity.this, Color.parseColor("#F57C00"));
-                mCurrentFragment = mExtraFragment;
+                mCurrentFragment = mArticleFragment;
 
                 selectShowFragment();
                 break;
