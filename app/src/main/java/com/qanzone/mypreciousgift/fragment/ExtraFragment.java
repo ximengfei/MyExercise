@@ -68,7 +68,6 @@ public class ExtraFragment extends BaseFragment implements GradationScrollView.S
     @Override
     protected void initFragmentData() {
 
-
         ViewTreeObserver vto = ivBanner.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
