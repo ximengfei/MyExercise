@@ -32,7 +32,7 @@
                 android:layout_height="300dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="25dp"
+                android:paddingTop="20dp"
                 android:paddingBottom="10dp">
 
                 <ImageView

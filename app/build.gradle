@@ -55,7 +55,7 @@ dependencies {
     compile files('libs/gson-2.6.2.jar')
     compile files('libs/BmobSDK_3.5.3_20161116.jar')
     compile files('libs/xUtils-2.6.14.jar')
-
+    compile files('libs/picasso-2.5.2.jar')
     //播放器
     compile('com.dou361.ijkplayer:jjdxm-ijkplayer:1.0.6') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
@@ -66,8 +66,8 @@ dependencies {
     compile 'com.dou361.ijkplayer-arm64:jjdxm-ijkplayer-arm64:1.0.0'
     compile 'com.dou361.ijkplayer-x86:jjdxm-ijkplayer-x86:1.0.0'
     compile 'com.dou361.ijkplayer-x86_64:jjdxm-ijkplayer-x86_64:1.0.0'
-
     //音乐floatactionbar
     compile 'com.cpacm:floatingmusicmenu:1.0.0'
-
+    //日历选择的控件
+    compile 'com.wdullaer:materialdatetimepicker:3.1.1'
 }

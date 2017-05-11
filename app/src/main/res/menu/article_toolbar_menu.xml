@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_calendar"
+        android:icon="@drawable/toolbar_calendar"
+        android:title="日历"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_random"
+        android:icon="@drawable/toolbar_random"
+        android:title="随机"
+        app:showAsAction="ifRoom" />
+</menu>

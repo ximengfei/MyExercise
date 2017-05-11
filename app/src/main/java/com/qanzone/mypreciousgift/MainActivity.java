@@ -3,6 +3,7 @@ package com.qanzone.mypreciousgift;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -120,11 +121,13 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.orange));
+        StatusBarUtil.setColorForDrawerLayout(MainActivity.this, drawerlayout, 90);
         mContext = this;
         checkNewVersion();
 //        StatusBarUtil.setColor(MainActivity.this, 0x607D8B);
         initBottomNavigation();
-        StatusBarUtil.setTranslucentForImageViewInFragment(MainActivity.this, 0, null);
+//        StatusBarUtil.setTranslucentForImageViewInFragment(MainActivity.this, 0, null);
         initFragment();
         //初始化navigationview
         initSlideNavigation();
@@ -412,7 +415,7 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
 
         bottomNavigation.addItem(new BottomNavigationItem(R.drawable.bottom_navigation_heart, "心情记录").setActiveColorResource(R.color.brown))
                 .addItem(new BottomNavigationItem(R.drawable.bottom_navigation_video, "电视直播").setActiveColorResource(R.color.grey))
-                .addItem(new BottomNavigationItem(R.drawable.bottom_navigation_extra, "拓展功能").setActiveColorResource(R.color.orange)).
+                .addItem(new BottomNavigationItem(R.drawable.bottom_navigation_article, "每日一文").setActiveColorResource(R.color.orange)).
                 setFirstSelectedPosition(lastSelectPosition).initialise();
         bottomNavigation.setTabSelectedListener(this);
     }
@@ -421,19 +424,18 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
     public void onTabSelected(int position) {
         switch (position) {
             case 0:
-//                StatusBarUtil.setColor(MainActivity.this, Color.parseColor("#8D6E63"));
+//                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.brown));
                 mCurrentFragment = mPicFragment;
                 selectShowFragment();
                 break;
             case 1:
-//                StatusBarUtil.setColor(MainActivity.this, Color.parseColor("#607D8B"));
+//                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.grey));
                 mCurrentFragment = mVideoFragment;
                 selectShowFragment();
                 break;
             case 2:
-//                StatusBarUtil.setColor(MainActivity.this, Color.parseColor("#F57C00"));
+//                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.orange));
                 mCurrentFragment = mArticleFragment;
-
                 selectShowFragment();
                 break;
         }

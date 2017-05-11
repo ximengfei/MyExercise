@@ -7,23 +7,27 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.lidroid.xutils.BitmapUtils;
 import com.qanzone.mypreciousgift.R;
 import com.qanzone.mypreciousgift.base.BaseFragment;
 import com.qanzone.mypreciousgift.utils.PublicFunc;
+import com.squareup.picasso.Picasso;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +45,7 @@ import okhttp3.Response;
  * Created by xmf on 2017/5/9.
  */
 
-public class ArticleFragment extends BaseFragment {
+public class ArticleFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
     @BindView(R.id.iv)
     ImageView iv;
     @BindView(R.id.toolbar)
@@ -49,7 +53,8 @@ public class ArticleFragment extends BaseFragment {
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
     String today_article_url = "https://interface.meiriyiwen.com/article/today?dev=1";
-    String random_iv_url = "https://link.zhihu.com/?target=https%3A//unsplash.it/800/400/%3Frandom";
+    String random_iv_url = "https://unsplash.it/800/400/?random";
+//    String random_iv_url = "https://link.zhihu.com/?target=https%3A//unsplash.it/800/400/%3Frandom";
     @BindView(R.id.article_author)
     TextView articleAuthor;
     @BindView(R.id.article_content)
@@ -63,13 +68,49 @@ public class ArticleFragment extends BaseFragment {
     boolean isCalling;
 
     @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        monthOfYear = monthOfYear + 1;
+        String month = "" + monthOfYear;
+        String day = "" + dayOfMonth;
+        if (monthOfYear <= 9) month = "0" + monthOfYear;
+        if (dayOfMonth <= 9) day = "0" + dayOfMonth;
+        yyy(RequestType.DATE_URL, "https://interface.meiriyiwen.com/article/day?dev=1&date=" + year + month + day);
+        Log.e("xmf", "https://interface.meiriyiwen.com/article/day?dev=1&date=" + year + month + day);
+//        view.dismiss();
+    }
+
+
+    public enum RequestType{
+        RANDOM_URL, DATE_URL
+    }
+    @Override
     protected View initFragmentView() {
         return LayoutInflater.from(mContext).inflate(R.layout.pager_article, null);
     }
 
     @Override
     protected void initFragmentData() {
+        toolbar.inflateMenu(R.menu.article_toolbar_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_random) {
+                    if (isCalling) {
+                        PublicFunc.showMsg(mContext, "已经在加载中了");
+                        return false;
+                    }
+                    yyy(RequestType.RANDOM_URL, "https://interface.meiriyiwen.com/article/random?dev=1");
+                }
+                else if (itemId == R.id.action_calendar) {
+                    showCalendar();
 
+                }
+                return true;
+            }
+
+
+        });
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
 
@@ -89,6 +130,39 @@ public class ArticleFragment extends BaseFragment {
 
     }
 
+    private void showCalendar() {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.setAccentColor(getResources().getColor(R.color.colorPrimaryDark));
+        dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+    }
+
+    private void yyy(RequestType type, String url) {
+//        String requestUrl = "";
+//        if (type == RequestType.DATE_URL)
+//            requestUrl = "";
+//        else if (type == RequestType.RANDOM_URL)
+//            requestUrl = "https://interface.meiriyiwen.com/article/random?dev=1";
+
+        isCalling = true;
+        getArticleData(url, new Listener() {
+            @Override
+            public void success(String title, String content, String author) {
+                isCalling = false;
+            }
+
+            @Override
+            public void faile() {
+                isCalling = false;
+
+            }
+        });
+    }
     public ArticleFragment(Context mContext) {
         super(mContext);
     }
@@ -106,6 +180,11 @@ public class ArticleFragment extends BaseFragment {
     }
 
     private void getArticleData(String url, final Listener listener) {
+//        https://unsplash.it/600/400/?random
+        Random random = new Random();
+        int wid = 900 - random.nextInt(201);
+        int hid = 500 - random.nextInt(201);
+        Picasso.with(mContext).load("https://unsplash.it/"+wid + "/"+hid +"/?random").placeholder(R.drawable.default_extra_header).into(iv);
         progressbar.setVisibility(View.VISIBLE);
         OkHttpClient mOkHttpClient = new OkHttpClient();
         Request.Builder requestBuilder = new Request.Builder().url(url);
@@ -117,7 +196,7 @@ public class ArticleFragment extends BaseFragment {
             @Override
             public void onFailure(Call call, IOException e) {
                 goneProgress();
-
+                PublicFunc.showMsg(mContext, "获取失败");
                 if (listener != null) listener.faile();
             }
 
@@ -129,9 +208,20 @@ public class ArticleFragment extends BaseFragment {
                 try {
                     JSONObject jo = new JSONObject(str);
                     JSONObject data = jo.getJSONObject("data");
-                    String author = data.getString("author");
-                    String title = data.getString("title");
-                    String content = data.getString("content");
+                    final String author = data.getString("author");
+                    final String title = data.getString("title");
+                    final String content = data.getString("content");
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            collapsingToolbarLayout.setTitle(title);
+                            articleAuthor.setText(author);
+                            String replace = content.replace("<p>", "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+//                            String replace1 = replace.replace("</p>", "</p><br />");
+                            articleContent.setText(Html.fromHtml(replace));
+                        }
+                    });
                     if (listener != null) listener.success(title, content, author);
                 } catch (JSONException e) {
                     if (listener != null) listener.faile();
@@ -151,13 +241,13 @@ public class ArticleFragment extends BaseFragment {
             @Override
             public void run() {
                 progressbar.setVisibility(View.GONE);
-                new BitmapUtils(mContext).display(iv, random_iv_url);
             }
         });
     }
 
     private void xxx() {
         isCalling = true;
+
         getArticleData(today_article_url, new Listener() {
             @Override
             public void success(final String title, final String content, final String author) {
@@ -175,11 +265,7 @@ public class ArticleFragment extends BaseFragment {
                                 }
                             });
 
-                        collapsingToolbarLayout.setTitle(title);
-                        articleAuthor.setText(author);
-                        String replace = content.replace("<p>", "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-                        String replace1 = replace.replace("</p>", "</p><br />");
-                        articleContent.setText(Html.fromHtml(replace1));
+
                     }
                 });
             }
