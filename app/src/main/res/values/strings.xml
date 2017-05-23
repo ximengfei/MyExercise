@@ -24,6 +24,7 @@
     <string name="feedback_link">你的联系方式（微信、qq、手机select one）</string>
     <string name="contact_is_empty">留下你的联系方式好伐?...</string>
     <string name="advice_is_empty">您有什么好的建议呢?...</string>
+    <string name="article_content_test">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</string>
     <string name="load_data_error">加载数据失败</string>
     <string name="load_data_error_resolve">请下拉屏幕再次刷新</string>
     <string name="article_test_content">sdsdsds</string>
