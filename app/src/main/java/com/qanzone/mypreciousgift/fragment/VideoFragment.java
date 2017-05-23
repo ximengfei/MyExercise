@@ -4,6 +4,7 @@ package com.qanzone.mypreciousgift.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,9 @@ import butterknife.OnClick;
 
 public class VideoFragment extends BaseFragment {
     @BindView(R.id.tv)
-    RelativeLayout tv;
+    CardView tv;
     @BindView(R.id.lunb0)
-    RelativeLayout lunb0;
+    CardView lunb0;
     @BindView(R.id.container)
     FrameLayout container;
     private View contentview;
@@ -74,6 +75,10 @@ public class VideoFragment extends BaseFragment {
     @OnClick(R.id.lunb0)
     void lunboClick() {
 //        PublicFunc.showMsg(mContext, "lunboclick");
-        startActivity(new Intent(mContext, VideoListActivity.class).putExtra(ConstantKey.VIDEOLIST_TYPE, VideoListActivity.INTENT_LUNBO));
+        //1.02版本以前的跳转方式
+//        startActivity(new Intent(mContext, VideoListActivity.class).putExtra(ConstantKey.VIDEOLIST_TYPE, VideoListActivity.INTENT_LUNBO));
+
+        //1.04 新的数据列表页面
+        startActivity(new Intent(mContext, VideoListActivity.class));
     }
 }

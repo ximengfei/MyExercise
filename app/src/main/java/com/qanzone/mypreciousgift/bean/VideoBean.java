@@ -11,7 +11,13 @@ import java.util.List;
 public class VideoBean implements Serializable{
     private String video_name;
     private String video_url;
+    private String video_hd_url; //高清的数据源
 
+    public VideoBean(String video_name, String video_url, String video_hd_url) {
+        this.video_name = video_name;
+        this.video_url = video_url;
+        this.video_hd_url = video_hd_url;
+    }
     public VideoBean(String video_name, String video_url) {
         this.video_name = video_name;
         this.video_url = video_url;
@@ -31,6 +37,14 @@ public class VideoBean implements Serializable{
 
     public void setVideo_url(String video_url) {
         this.video_url = video_url;
+    }
+
+    public String getVideo_hd_url() {
+        return video_hd_url;
+    }
+
+    public void setVideo_hd_url(String video_hd_url) {
+        this.video_hd_url = video_hd_url;
     }
 
     //tv的数据集合

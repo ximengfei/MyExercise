@@ -1,24 +1,24 @@
 package com.qanzone.mypreciousgift.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.qanzone.mypreciousgift.R;
-import com.qanzone.mypreciousgift.bean.SearchingBean;
 import com.qanzone.mypreciousgift.bean.VideoBean;
-import com.qanzone.mypreciousgift.fragment.ExtraFragment;
 import com.qanzone.mypreciousgift.utils.ConstantKey;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,47 +27,59 @@ import butterknife.OnClick;
 
 public class VideoListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    @BindView(R.id.title_back)
-    ImageView titleBack;
-    @BindView(R.id.title_text)
-    TextView titleText;
-    @BindView(R.id.video_list)
-    ListView videoList;
-    @BindView(R.id.activity_video_list)
-    LinearLayout activityVideoList;
+    //    @BindView(R.id.title_back)
+//    ImageView titleBack;
+//    @BindView(R.id.video_list)
+//    ListView videoList;
+//    @BindView(R.id.activity_video_list)
+//    LinearLayout activityVideoList;
     public static final String INTENT_TV = "TV直播";
     public static final String INTENT_LUNBO = "轮播台";
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.video_list)
+    ListView videoList;
+    @BindView(R.id.tabs)
+    TabLayout tabs;
     private Boolean mIsLive;
     private VideoAdapter mVideoAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_list);
         ButterKnife.bind(this);
 
+        toolbar.setTitle(INTENT_LUNBO);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
-        String stringExtra = getIntent().getStringExtra(ConstantKey.VIDEOLIST_TYPE);
-        if (stringExtra.isEmpty()) finish();
+        ArrayList<String> list_title = new ArrayList<>();
+        list_title.add("热门推荐");
+        list_title.add("热门收藏");
+        list_title.add("本月热榜");
+        list_title.add("今日热榜");
 
-        titleText.setText(stringExtra);
+        //设置TabLayout的模式
+        tabs.setTabMode(TabLayout.MODE_FIXED);
+        //为TabLayout添加tab名称
+        tabs.addTab(tabs.newTab().setText(list_title.get(0)));
+        tabs.addTab(tabs.newTab().setText(list_title.get(1)));
+        tabs.addTab(tabs.newTab().setText(list_title.get(2)));
+        tabs.addTab(tabs.newTab().setText(list_title.get(3)));
 
+        mVideoAdapter = new VideoAdapter(VideoBean.getLunBoList());
+        mIsLive = true;
 
-        if (INTENT_TV.equals(stringExtra)) {
-            mVideoAdapter = new VideoAdapter(VideoBean.getTvList());
-            mIsLive = false;
-
-        } else if (INTENT_LUNBO.equals(stringExtra)) {
-            mVideoAdapter = new VideoAdapter(VideoBean.getLunBoList());
-            mIsLive = true;
-        }
         videoList.setAdapter(mVideoAdapter);
         videoList.setOnItemClickListener(this);
     }
-
-    @OnClick(R.id.title_back)
-        void back() {
-            finish();
-        }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
@@ -81,7 +93,7 @@ public class VideoListActivity extends AppCompatActivity implements AdapterView.
 
     }
 
-    private class VideoAdapter extends BaseAdapter{
+    private class VideoAdapter extends BaseAdapter {
 
         private List<VideoBean> videoDatas;
 

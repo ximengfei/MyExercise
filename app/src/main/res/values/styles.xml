@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--CardView-->
+    <style name="myCardView" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <!--卡片的圆角大小-->
+        <item name="cardCornerRadius">5dp</item>
+        <!--阴影的大小-->
+        <item name="cardElevation">3dp</item>
+        <!--卡片的背景色-->
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+
+    <!--<style name="HorizontalProgress" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>-->
 </resources>

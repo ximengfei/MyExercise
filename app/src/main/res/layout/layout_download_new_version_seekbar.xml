@@ -12,18 +12,17 @@
         android:paddingTop="10dp" >
 
         <ProgressBar
+            android:theme="@style/HorizontalProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:id="@+id/pb_download_progress"
-            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:indeterminateDrawable="@drawable/vv_star_play_progress_seek"
-            android:maxHeight="2dp"
-            android:minHeight="2dp"
+            android:indeterminate="false"
             android:paddingBottom="15dp"
             android:paddingTop="20dp"
-            android:progressDrawable="@drawable/vv_star_play_progress_seek" />
-
+             />
+        <!--android:indeterminate="false" 确定maxPro-->
         <TextView
             android:id="@+id/tv_download_current_progress"
             android:layout_width="wrap_content"

@@ -68,8 +68,6 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationBar bottomNavigation;
-
-
     int lastSelectPosition = 0;
     @BindView(R.id.content)
     FrameLayout content;
@@ -92,7 +90,6 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
     //音乐控制条的定时器
     private Timer time;
     private TimerTask TimerTask;
-
     private BaseFragment mLastFragment;
     private BaseFragment mCurrentFragment;
     private VideoFragment mVideoFragment;
@@ -121,13 +118,11 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//        StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.orange));
-        StatusBarUtil.setColorForDrawerLayout(MainActivity.this, drawerlayout, 90);
+        StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.brown));
+//        StatusBarUtil.setColorForDrawerLayout(MainActivity.this, drawerlayout, 0x8D6E63);
         mContext = this;
         checkNewVersion();
-//        StatusBarUtil.setColor(MainActivity.this, 0x607D8B);
         initBottomNavigation();
-//        StatusBarUtil.setTranslucentForImageViewInFragment(MainActivity.this, 0, null);
         initFragment();
         //初始化navigationview
         initSlideNavigation();
@@ -343,7 +338,7 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
         }
         tvContent.setText(updatalog);
 //        tvUpdateTile.setText("(版本号:V" + result.getServicecode() + ".0)");
-        tvUpdateTile.setText("(更新日期:" + result.getUpdatedAt());
+        tvUpdateTile.setText("(更新时间:" + result.getUpdatedAt() + ")");
 
         ok.setOnClickListener(new View.OnClickListener() {
 
@@ -409,9 +404,13 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
     }
 
     private void initBottomNavigation() {
-        bottomNavigation.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        bottomNavigation.setMode(BottomNavigationBar.MODE_FIXED);
-        bottomNavigation.setAutoHideEnabled(true);
+//        bottomNavigation.setFab(fmm);
+        //静态、中规中矩
+//        bottomNavigation.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+//        bottomNavigation.setMode(BottomNavigationBar.MODE_FIXED);
+        //动态、比较花哨
+        bottomNavigation.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
+        bottomNavigation.setMode(BottomNavigationBar.MODE_SHIFTING);
 
         bottomNavigation.addItem(new BottomNavigationItem(R.drawable.bottom_navigation_heart, "心情记录").setActiveColorResource(R.color.brown))
                 .addItem(new BottomNavigationItem(R.drawable.bottom_navigation_video, "电视直播").setActiveColorResource(R.color.grey))
@@ -424,17 +423,17 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
     public void onTabSelected(int position) {
         switch (position) {
             case 0:
-//                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.brown));
+                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.brown));
                 mCurrentFragment = mPicFragment;
                 selectShowFragment();
                 break;
             case 1:
-//                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.grey));
+                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.grey));
                 mCurrentFragment = mVideoFragment;
                 selectShowFragment();
                 break;
             case 2:
-//                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.orange));
+                StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.orange));
                 mCurrentFragment = mArticleFragment;
                 selectShowFragment();
                 break;

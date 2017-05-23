@@ -73,15 +73,7 @@ public class NetVideoListActivity extends AppCompatActivity implements AdapterVi
         //设置标题和menu
         toolBar.setTitle("电视直播");
         toolBar.setTitleTextColor(Color.WHITE);
-//        toolBar.inflateMenu(R.menu.base_toolbar_menu);
         setSupportActionBar(toolBar);
-//        toolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                Toast.makeText(mContext, "搜索界面下次开发，敬请期待", Toast.LENGTH_SHORT).show();
-//                return true;
-//            }
-//        });
 
         //下拉刷新的相关设置
         refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.yellow);
@@ -157,10 +149,10 @@ public class NetVideoListActivity extends AppCompatActivity implements AdapterVi
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-
         //坑爹啊，作茧自缚，播放页面不想改了，就按照以前的数据结构来写吧...
         NetVideoData netVideoData = mVideoAdapter.getDataSource().get(index);
-        VideoBean videoBean = new VideoBean(netVideoData.getVideoName(), netVideoData.getVideoUrl());
+        VideoBean videoBean = new VideoBean(netVideoData.getVideoName(), netVideoData.getVideoUrl(),
+                netVideoData.getVideoHdUrl());
         Intent intent = new Intent(mContext, PlayerActivity.class);
         Bundle b = new Bundle();
         b.putBoolean(ConstantKey.INTENT_BOOLEAN, false);
@@ -183,15 +175,15 @@ public class NetVideoListActivity extends AppCompatActivity implements AdapterVi
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+        if (!TextUtils.isEmpty((query))){
+            //搜索结果页面
+        }
+        return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-//        if (TextUtils.isEmpty((newText))){
-//            netVideoList.clearTextFilter();
-//        }else{
-//            netVideoList.setFilterText(newText);}
+
         return true;
     }
 }

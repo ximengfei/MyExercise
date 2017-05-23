@@ -1,5 +1,6 @@
 package com.qanzone.mypreciousgift.activity;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.PowerManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -19,13 +21,20 @@ import com.dou361.ijkplayer.widget.PlayStateParams;
 import com.dou361.ijkplayer.widget.PlayerView;
 import com.qanzone.mypreciousgift.bean.VideoBean;
 import com.qanzone.mypreciousgift.utils.ConstantKey;
+import com.qanzone.mypreciousgift.utils.PublicFunc;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerActivity extends AppCompatActivity {
     private PlayerView player;
     private Context mContext;
     private PowerManager.WakeLock wakeLock;
+    //切换分辨率的按钮显示
+    private boolean mIsHideStreanm;
+    //收藏按钮
+    private FloatingActionButton collectFab;
     View rootView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +42,15 @@ public class PlayerActivity extends AppCompatActivity {
         this.mContext = this;
         rootView = getLayoutInflater().from(this).inflate(R.layout.activity_player, null);
         setContentView(rootView);
-        TextView playingVdeio = (TextView) rootView.findViewById(R.id.playingtext);
+//        TextView playingVdeio = (TextView) rootView.findViewById(R.id.playingtext);
+        collectFab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+
+        collectFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PublicFunc.showMsg(mContext, "收藏功能，敬请期待");
+            }
+        });
         /**虚拟按键的隐藏方法*/
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
@@ -63,11 +80,22 @@ public class PlayerActivity extends AppCompatActivity {
         VideoBean videobean = (VideoBean) bundleExtra.getSerializable(ConstantKey.INTENT_SERIALIZABLE);
 //        boolean isLive = bundleExtra.getBoolean(ConstantKey.INTENT_BOOLEAN);
 
+        List<VideoijkBean> list = new ArrayList<VideoijkBean>();
+        VideoijkBean m1 = new VideoijkBean();
+        m1.setStream("标清");
+        m1.setUrl(videobean.getVideo_url());
+        list.add(m1);
+        if (!TextUtils.isEmpty(videobean.getVideo_hd_url())) {
+            VideoijkBean m2 = new VideoijkBean();
+            m2.setStream("高清");
+            m2.setUrl(videobean.getVideo_hd_url());
+            list.add(m2);
+            mIsHideStreanm = true;
+        }
 
         player = new PlayerView(this, rootView) {
             @Override
             public PlayerView toggleProcessDurationOrientation() {
-                hideSteam(getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 return setProcessDurationOrientation(getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT ? PlayStateParams.PROCESS_PORTRAIT : PlayStateParams.PROCESS_LANDSCAPE);
             }
 
@@ -76,43 +104,37 @@ public class PlayerActivity extends AppCompatActivity {
                 return super.setPlaySource(list);
             }
         }
-
-//                .setTitle("什么")
-//                .setProcessDurationOrientation(PlayStateParams.PROCESS_PORTRAIT)
-//                .setScaleType(PlayStateParams.fillparent)
-//                .forbidTouch(false)
-//                .hideSteam(true)
-//                .hideControlPanl(true)
-//                .hideCenterPlayer(true)
-//                .showThumbnail(new OnShowThumbnailListener() {
-//                    @Override
-//                    public void onShowThumbnail(ImageView ivThumbnail) {
-//                    }
-//                })
-//
-//                .setPlaySource(videobean.getVideo_url())
-//                .setChargeTie(true,60)
-//                .startPlay();
-
+                //设置标题
                 .setTitle(videobean.getVideo_name())
+                //设置3秒后重连
+                .setAutoReConnect(true, 3000)
                 .setProcessDurationOrientation(PlayStateParams.PROCESS_PORTRAIT)
                 .setScaleType(PlayStateParams.fillparent)
-                .hideSteam(true)
+                //流量播放提醒
+                .setNetWorkTypeTie(true)
+                //隐藏分辨率按钮，true隐藏，false为显示
+                .hideSteam(!mIsHideStreanm)
+                //是否禁止触摸
                 .forbidTouch(false)
-                .hideControlPanl(true)
-                .hideCenterPlayer(true)
+                .hideFullscreen(false)
+                //设置是否禁止隐藏bar，true为一直显示，false为点击可以隐藏或显示
+                .setForbidHideControlPanl(false)
+                //隐藏中间播放按钮,ture为隐藏，false为不做隐藏处理，但不是显示
+                .hideCenterPlayer(false)
+                //隐藏旋转按钮，true隐藏，false为显示
                 .hideRotation(true)
                 .showThumbnail(new OnShowThumbnailListener() {
                     @Override
                     public void onShowThumbnail(ImageView ivThumbnail) {
-                        ivThumbnail.setBackgroundResource(R.drawable.video_place);
+//                        ivThumbnail.setBackgroundResource(R.drawable.video_place);
+                        Picasso.with(mContext).load("https://unsplash.it/400/200/?random").
+                                placeholder(R.drawable.video_place).into(ivThumbnail);
                     }
                 })
-                .setPlaySource(videobean.getVideo_url())
-                .setChargeTie(true,60)
+                .setPlaySource(list)
+//                .setChargeTie(true,60)
                 .startPlay();
 
-        playingVdeio.setText("正在播放： " + videobean.getVideo_name());
     }
 
 //    //隐藏返回键，true隐藏，false为显示

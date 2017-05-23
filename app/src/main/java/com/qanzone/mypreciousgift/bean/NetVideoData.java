@@ -12,6 +12,10 @@ public class NetVideoData extends BmobObject {
      */
     private String videoUrl;
     /**
+     * 高清视频源
+     */
+    private String videoHdUrl;
+    /**
      * 直播源的名称
      */
     private String videoName;
@@ -25,6 +29,15 @@ public class NetVideoData extends BmobObject {
      * 轮播视频的类型 保留字段 暂未定义
      */
     private int lunboType;
+
+    //### get、set方法 ###
+    public String getVideoHdUrl() {
+        return videoHdUrl;
+    }
+
+    public void setVideoHdUrl(String videoHdUrl) {
+        this.videoHdUrl = videoHdUrl;
+    }
 
     public String getVideoUrl() {
         return videoUrl;

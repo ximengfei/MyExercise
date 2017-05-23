@@ -1,9 +1,12 @@
 package com.qanzone.mypreciousgift.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -16,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.qanzone.mypreciousgift.MainActivity;
 import com.qanzone.mypreciousgift.R;
 import com.qanzone.mypreciousgift.base.BaseFragment;
 import com.qanzone.mypreciousgift.utils.PublicFunc;
@@ -46,6 +51,8 @@ import okhttp3.Response;
  */
 
 public class ArticleFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
+    private final int REQUEST_SUCCESS = 10000;
+    private final int REQUEST_FAILE = 10001;
     @BindView(R.id.iv)
     ImageView iv;
     @BindView(R.id.toolbar)
@@ -64,9 +71,21 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
     RelativeLayout loadDataError;
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
+    private MainActivity mainActivity;
 
     boolean isCalling;
-
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            int what = msg.what;
+            progressbar.setVisibility(View.GONE);
+            if (what == REQUEST_SUCCESS) {
+            }
+            else if (what == REQUEST_FAILE) {
+                PublicFunc.showMsg(mContext, "获取失败");
+            }
+        }
+    };
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         monthOfYear = monthOfYear + 1;
@@ -76,7 +95,6 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
         if (dayOfMonth <= 9) day = "0" + dayOfMonth;
         yyy(RequestType.DATE_URL, "https://interface.meiriyiwen.com/article/day?dev=1&date=" + year + month + day);
         Log.e("xmf", "https://interface.meiriyiwen.com/article/day?dev=1&date=" + year + month + day);
-//        view.dismiss();
     }
 
 
@@ -143,12 +161,6 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
     }
 
     private void yyy(RequestType type, String url) {
-//        String requestUrl = "";
-//        if (type == RequestType.DATE_URL)
-//            requestUrl = "";
-//        else if (type == RequestType.RANDOM_URL)
-//            requestUrl = "https://interface.meiriyiwen.com/article/random?dev=1";
-
         isCalling = true;
         getArticleData(url, new Listener() {
             @Override
@@ -163,8 +175,9 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
             }
         });
     }
-    public ArticleFragment(Context mContext) {
-        super(mContext);
+    public ArticleFragment(Context context) {
+        super(context);
+        mainActivity = (MainActivity) mContext;
     }
 
     public ArticleFragment() {
@@ -195,25 +208,15 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
         mcall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressbar.setVisibility(View.GONE);
-                        PublicFunc.showMsg(mContext, "获取失败");
-                    }
-                });
+                mHandler.sendEmptyMessage(REQUEST_FAILE);
                 if (listener != null) listener.faile();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressbar.setVisibility(View.GONE);
-                    }
-                });
+                mHandler.sendEmptyMessage(REQUEST_SUCCESS);
+
                 //子线程
                 String str = response.body().string();
                 try {
@@ -223,7 +226,7 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
                     final String title = data.getString("title");
                     final String content = data.getString("content");
 
-                    getActivity().runOnUiThread(new Runnable() {
+                    mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             collapsingToolbarLayout.setTitle(title);
@@ -254,7 +257,7 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
         getArticleData(today_article_url, new Listener() {
             @Override
             public void success(final String title, final String content, final String author) {
-                getActivity().runOnUiThread(new Runnable() {
+                mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         isCalling = false;
@@ -276,7 +279,7 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
             @Override
             public void faile() {
                 isCalling = false;
-                getActivity().runOnUiThread(new Runnable() {
+                mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (loadDataError.getVisibility() == View.GONE) {
