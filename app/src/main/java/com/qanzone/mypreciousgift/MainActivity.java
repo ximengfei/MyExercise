@@ -121,7 +121,7 @@ public class MainActivity extends FragmentActivity implements BottomNavigationBa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.orange));
+//        StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.orange));
         StatusBarUtil.setColorForDrawerLayout(MainActivity.this, drawerlayout, 90);
         mContext = this;
         checkNewVersion();

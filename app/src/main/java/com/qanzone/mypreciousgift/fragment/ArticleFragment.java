@@ -195,14 +195,25 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
         mcall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                goneProgress();
-                PublicFunc.showMsg(mContext, "获取失败");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressbar.setVisibility(View.GONE);
+                        PublicFunc.showMsg(mContext, "获取失败");
+                    }
+                });
                 if (listener != null) listener.faile();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                goneProgress();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressbar.setVisibility(View.GONE);
+                    }
+                });
                 //子线程
                 String str = response.body().string();
                 try {
@@ -236,14 +247,6 @@ public class ArticleFragment extends BaseFragment implements DatePickerDialog.On
         void faile();
     }
 
-    private void goneProgress() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressbar.setVisibility(View.GONE);
-            }
-        });
-    }
 
     private void xxx() {
         isCalling = true;
