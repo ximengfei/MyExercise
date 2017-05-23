@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -35,7 +39,7 @@ import cn.bmob.v3.listener.FindListener;
 /**
  * 此页面区别于VideoListActivity,是从网络获取直播数据
  */
-public class NetVideoListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class NetVideoListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
 
     @BindView(R.id.tool_bar)
     Toolbar toolBar;
@@ -49,7 +53,7 @@ public class NetVideoListActivity extends AppCompatActivity implements AdapterVi
     RelativeLayout loadDataError;
     private Context mContext;
     private VideoAdapter mVideoAdapter;
-
+    private SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,14 +73,15 @@ public class NetVideoListActivity extends AppCompatActivity implements AdapterVi
         //设置标题和menu
         toolBar.setTitle("电视直播");
         toolBar.setTitleTextColor(Color.WHITE);
-        toolBar.inflateMenu(R.menu.base_toolbar_menu);
-        toolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(mContext, "搜索界面下次开发，敬请期待", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+//        toolBar.inflateMenu(R.menu.base_toolbar_menu);
+        setSupportActionBar(toolBar);
+//        toolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                Toast.makeText(mContext, "搜索界面下次开发，敬请期待", Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
 
         //下拉刷新的相关设置
         refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.yellow);
@@ -94,6 +99,7 @@ public class NetVideoListActivity extends AppCompatActivity implements AdapterVi
         mVideoAdapter = new VideoAdapter(mContext, emptyDate);
         netVideoList.setAdapter(mVideoAdapter);
         netVideoList.setOnItemClickListener(this);
+//        netVideoList.setTextFilterEnabled(true);
         //下拉刷新和list view的冲突解决
         netVideoList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -161,5 +167,31 @@ public class NetVideoListActivity extends AppCompatActivity implements AdapterVi
         b.putSerializable(ConstantKey.INTENT_SERIALIZABLE, videoBean);
         intent.putExtra(ConstantKey.INTENT_ACTIVITY, b);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.base_toolbar_menu,menu);
+        MenuItem menuItem=menu.findItem(R.id.action_search);//
+        searchView= (SearchView) MenuItemCompat.getActionView(menuItem);//加载searchview
+        searchView.setOnQueryTextListener(this);//为搜索框设置监听事件
+        searchView.setSubmitButtonEnabled(true);//设置是否显示搜索按钮
+        searchView.setQueryHint("search");//设置提示信息
+        searchView.setIconifiedByDefault(true);//设置搜索默认为图标
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+//        if (TextUtils.isEmpty((newText))){
+//            netVideoList.clearTextFilter();
+//        }else{
+//            netVideoList.setFilterText(newText);}
+        return true;
     }
 }
